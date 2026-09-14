@@ -624,7 +624,6 @@ showMessage(
 function goToDashboard(){
 
 
-
 const user =
 
 JSON.parse(
@@ -632,6 +631,8 @@ JSON.parse(
 localStorage.getItem("user")
 
 );
+
+
 
 
 
@@ -648,20 +649,25 @@ Halo ${user.nama}
 </h2>
 
 
+
 <p>
-ID Peserta:
-<br>
-
-${user.idPeserta}
-
+ID Peserta
 </p>
 
 
-<p>
-QR:
-<br>
+<h3>
+${user.idPeserta}
+</h3>
 
-${user.qrCode}
+
+
+<div id="qrcode"></div>
+
+
+
+<p>
+
+Tunjukkan QR ini saat check-in
 
 </p>
 
@@ -674,11 +680,37 @@ ${user.qrCode}
 
 
 
+
+
+new QRCode(
+
+document.getElementById(
+"qrcode"
+),
+
+{
+
+
+text:
+user.idPeserta,
+
+
+width:
+220,
+
+
+height:
+220
+
+
+
 }
 
+);
 
 
 
+}
 
 
 
