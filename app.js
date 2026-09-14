@@ -1,122 +1,191 @@
 const API_URL =
-"https://script.google.com/macros/s/XXXX/exec";
+"https://script.google.com/macros/s/AKfycbyCwRWw3LaA7-nDq7CLQ_uDZK2n275Ad-a0O3qZI3VjglHTbEuV9E32DvWJWZw2XjzZ0w/exec";
 
 
 
 
+// ======================================
+// CHECK WHATSAPP
+// ======================================
 
 function checkWhatsApp(){
 
 
-const whatsapp =
-document.getElementById(
-"whatsapp"
-).value;
+    const whatsapp =
+    document
+    .getElementById("whatsapp")
+    .value
+    .trim();
 
 
 
+    if(!whatsapp){
 
-fetch(API_URL,{
+        showMessage(
+            "Nomor WhatsApp wajib diisi",
+            "error"
+        );
 
+        return;
 
-method:"POST",
-
-
-headers:{
-
-
-"Content-Type":"application/json"
-
-
-},
+    }
 
 
-body:JSON.stringify({
+
+    showMessage(
+        "Memeriksa nomor...",
+        ""
+    );
 
 
-action:"checkUser",
+
+    fetch(API_URL,{
 
 
-data:{
+        method:"POST",
 
 
-whatsapp:whatsapp
+        headers:{
+
+
+            "Content-Type":
+            "application/json"
+
+
+        },
+
+
+        body:JSON.stringify({
+
+
+            action:
+            "checkUser",
+
+
+            data:{
+
+
+                whatsapp:
+                whatsapp
+
+
+            }
+
+
+        })
+
+
+    })
+
+
+
+    .then(response=>response.json())
+
+
+
+    .then(result=>{
+
+
+        console.log(result);
+
+
+
+        if(result.registered){
+
+
+            showPIN();
+
+
+
+        }
+
+
+        else{
+
+
+            showRegister();
+
+
+
+        }
+
+
+
+    })
+
+
+
+    .catch(error=>{
+
+
+        console.error(error);
+
+
+
+        showMessage(
+            "Gagal terhubung ke server",
+            "error"
+        );
+
+
+    });
+
 
 
 }
 
 
-})
-
-
-})
-
-
-.then(res=>res.json())
-
-
-.then(result=>{
-
-
-if(result.registered){
-
-
-showPIN();
-
-
-}
-
-else{
-
-
-showRegister();
-
-
-}
-
-
-
-});
-
-
-}
 
 
 
 
 
-
+// ======================================
+// FORM LOGIN
+// ======================================
 
 function showPIN(){
 
 
+
 document.getElementById(
 "formArea"
-).innerHTML=`
+).innerHTML = `
+
 
 <div class="card">
 
 
 <h3>
-Masukkan PIN
+Verifikasi PIN
 </h3>
 
 
 <input
+
 id="pin"
+
 type="password"
-placeholder="PIN"
+
+placeholder="Masukkan PIN"
+
 >
 
 
+
 <button onclick="login()">
+
 MASUK
+
 </button>
+
 
 
 </div>
 
+
 `;
+
 
 
 }
@@ -127,42 +196,131 @@ MASUK
 
 
 
+// ======================================
+// FORM REGISTER
+// ======================================
+
 function showRegister(){
+
 
 
 document.getElementById(
 "formArea"
-).innerHTML=`
+).innerHTML = `
+
 
 <div class="card">
 
 
 <h3>
-Data Baru
+Buat Akun Baru
 </h3>
 
 
+
 <input
+
 id="nama"
+
 placeholder="Nama Lengkap"
+
 >
+
+
 
 
 <input
+
 id="pin"
+
 type="password"
+
 placeholder="Buat PIN"
+
 >
 
 
-<button>
+
+
+<button onclick="register()">
+
 DAFTAR
+
 </button>
+
 
 
 </div>
 
+
 `;
+
+
+
+}
+
+
+
+
+
+
+
+// ======================================
+// LOGIN
+// ======================================
+
+function login(){
+
+
+alert(
+"Login API akan diaktifkan berikutnya"
+);
+
+
+}
+
+
+
+
+
+
+// ======================================
+// REGISTER
+// ======================================
+
+function register(){
+
+
+alert(
+"Register API akan diaktifkan berikutnya"
+);
+
+
+}
+
+
+
+
+
+
+
+function showMessage(text,type){
+
+
+
+const box =
+
+document.getElementById(
+"message"
+);
+
+
+
+box.innerHTML=text;
+
+
+box.className=type;
+
 
 
 }
