@@ -3,7 +3,6 @@ const API_URL =
 
 
 
-
 // ======================================
 // CHECK WHATSAPP
 // ======================================
@@ -40,25 +39,34 @@ function checkWhatsApp(){
 
 
     fetch(API_URL,{
-    
-    method:"POST",
 
-    body:JSON.stringify({
 
-        action:"checkUser",
+        method:"POST",
 
-        data:{
-            whatsapp:whatsapp
-        }
+
+        body:JSON.stringify({
+
+
+            action:"checkUser",
+
+
+            data:{
+
+
+                whatsapp:whatsapp
+
+
+            }
+
+
+        })
+
 
     })
-
-})
 
 
 
     .then(response=>response.json())
-
 
 
     .then(result=>{
@@ -74,7 +82,6 @@ function checkWhatsApp(){
             showPIN();
 
 
-
         }
 
 
@@ -82,7 +89,6 @@ function checkWhatsApp(){
 
 
             showRegister();
-
 
 
         }
@@ -101,8 +107,11 @@ function checkWhatsApp(){
 
 
         showMessage(
+
             "Gagal terhubung ke server",
+
             "error"
+
         );
 
 
@@ -118,12 +127,12 @@ function checkWhatsApp(){
 
 
 
+
 // ======================================
-// FORM LOGIN
+// FORM LOGIN PIN
 // ======================================
 
 function showPIN(){
-
 
 
 document.getElementById(
@@ -158,7 +167,6 @@ MASUK
 </button>
 
 
-
 </div>
 
 
@@ -174,12 +182,12 @@ MASUK
 
 
 
+
 // ======================================
 // FORM REGISTER
 // ======================================
 
 function showRegister(){
-
 
 
 document.getElementById(
@@ -206,7 +214,6 @@ placeholder="Nama Lengkap"
 
 
 
-
 <input
 
 id="pin"
@@ -216,7 +223,6 @@ type="password"
 placeholder="Buat PIN"
 
 >
-
 
 
 
@@ -243,16 +249,181 @@ DAFTAR
 
 
 
+
+
 // ======================================
-// LOGIN
+// LOGIN PESERTA
 // ======================================
 
 function login(){
 
 
-alert(
-"Login API akan diaktifkan berikutnya"
+
+const whatsapp =
+
+document
+.getElementById("whatsapp")
+.value
+.trim();
+
+
+
+const pin =
+
+document
+.getElementById("pin")
+.value
+.trim();
+
+
+
+
+
+if(!pin){
+
+
+showMessage(
+
+"PIN wajib diisi",
+
+"error"
+
 );
+
+
+return;
+
+
+}
+
+
+
+
+
+fetch(API_URL,{
+
+
+method:"POST",
+
+
+body:JSON.stringify({
+
+
+action:"login",
+
+
+data:{
+
+
+whatsapp:whatsapp,
+
+
+pin:pin
+
+
+}
+
+
+})
+
+
+})
+
+
+
+.then(response=>response.json())
+
+
+.then(result=>{
+
+
+console.log(result);
+
+
+
+if(result.status){
+
+
+
+showMessage(
+
+"Login berhasil. Halo " 
++
+result.data.nama,
+
+"success"
+
+);
+
+
+
+// simpan session sederhana
+
+localStorage.setItem(
+
+"user",
+
+JSON.stringify(
+result.data
+)
+
+);
+
+
+
+
+// lanjut halaman peserta nanti
+
+setTimeout(()=>{
+
+
+goToDashboard();
+
+
+},1000);
+
+
+
+}
+
+
+else{
+
+
+showMessage(
+
+result.message,
+
+"error"
+
+);
+
+
+}
+
+
+
+})
+
+
+.catch(error=>{
+
+
+console.error(error);
+
+
+
+showMessage(
+
+"Gagal login",
+
+"error"
+
+);
+
+
+});
+
 
 
 }
@@ -262,16 +433,178 @@ alert(
 
 
 
+
+
+
 // ======================================
-// REGISTER
+// REGISTER PESERTA
 // ======================================
 
 function register(){
 
 
-alert(
-"Register API akan diaktifkan berikutnya"
+
+const whatsapp =
+
+document
+.getElementById("whatsapp")
+.value
+.trim();
+
+
+
+const nama =
+
+document
+.getElementById("nama")
+.value
+.trim();
+
+
+
+const pin =
+
+document
+.getElementById("pin")
+.value
+.trim();
+
+
+
+
+
+
+if(!nama || !pin){
+
+
+showMessage(
+
+"Nama dan PIN wajib diisi",
+
+"error"
+
 );
+
+
+return;
+
+
+}
+
+
+
+
+
+fetch(API_URL,{
+
+
+method:"POST",
+
+
+body:JSON.stringify({
+
+
+action:"register",
+
+
+data:{
+
+
+nama:nama,
+
+
+whatsapp:whatsapp,
+
+
+pin:pin
+
+
+}
+
+
+})
+
+
+})
+
+
+
+.then(response=>response.json())
+
+
+.then(result=>{
+
+
+console.log(result);
+
+
+
+if(result.status){
+
+
+
+showMessage(
+
+"Registrasi berhasil",
+
+"success"
+
+);
+
+
+
+// otomatis login
+
+setTimeout(()=>{
+
+
+login();
+
+
+},1000);
+
+
+
+}
+
+
+else{
+
+
+showMessage(
+
+result.message,
+
+"error"
+
+);
+
+
+}
+
+
+
+})
+
+
+.catch(error=>{
+
+
+console.error(error);
+
+
+
+showMessage(
+
+"Gagal registrasi",
+
+"error"
+
+);
+
+
+});
+
 
 
 }
@@ -281,6 +614,79 @@ alert(
 
 
 
+
+
+
+// ======================================
+// DASHBOARD PESERTA SEMENTARA
+// ======================================
+
+function goToDashboard(){
+
+
+
+const user =
+
+JSON.parse(
+
+localStorage.getItem("user")
+
+);
+
+
+
+document.getElementById(
+"formArea"
+).innerHTML = `
+
+
+<div class="card">
+
+
+<h2>
+Halo ${user.nama}
+</h2>
+
+
+<p>
+ID Peserta:
+<br>
+
+${user.idPeserta}
+
+</p>
+
+
+<p>
+QR:
+<br>
+
+${user.qrCode}
+
+</p>
+
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================
+// MESSAGE
+// ======================================
 
 function showMessage(text,type){
 
