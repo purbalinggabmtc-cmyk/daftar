@@ -40,42 +40,20 @@ function checkWhatsApp(){
 
 
     fetch(API_URL,{
+    
+    method:"POST",
 
+    body:JSON.stringify({
 
-        method:"POST",
+        action:"checkUser",
 
-
-        headers:{
-
-
-            "Content-Type":
-            "application/json"
-
-
-        },
-
-
-        body:JSON.stringify({
-
-
-            action:
-            "checkUser",
-
-
-            data:{
-
-
-                whatsapp:
-                whatsapp
-
-
-            }
-
-
-        })
-
+        data:{
+            whatsapp:whatsapp
+        }
 
     })
+
+})
 
 
 
