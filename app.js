@@ -621,7 +621,7 @@ showMessage(
 // DASHBOARD PESERTA SEMENTARA
 // ======================================
 
-function goToDashboard(){
+function goToDashboard(){function goToDashboard(){
 
 
 const user =
