@@ -2878,7 +2878,9 @@ KUPON UNDIAN
 </div>
 
 
-
+<button onclick="showDashboard()">
+REFRESH STATUS
+</button>
 
 
 <button onclick="logout()">
