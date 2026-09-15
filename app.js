@@ -31,39 +31,21 @@ function checkWhatsApp(){
 
 
 
-    showMessage(
-        "Memeriksa nomor...",
-        ""
-    );
-
-
-
     fetch(API_URL,{
-
 
         method:"POST",
 
-
         body:JSON.stringify({
-
 
             action:"checkUser",
 
-
             data:{
-
-
                 whatsapp:whatsapp
-
-
             }
-
 
         })
 
-
     })
-
 
 
     .then(response=>response.json())
@@ -83,8 +65,6 @@ function checkWhatsApp(){
 
 
         }
-
-
         else{
 
 
@@ -98,20 +78,15 @@ function checkWhatsApp(){
     })
 
 
-
     .catch(error=>{
 
 
         console.error(error);
 
 
-
         showMessage(
-
             "Gagal terhubung ke server",
-
             "error"
-
         );
 
 
@@ -120,8 +95,6 @@ function checkWhatsApp(){
 
 
 }
-
-
 
 
 
@@ -159,7 +132,6 @@ placeholder="Masukkan PIN"
 >
 
 
-
 <button onclick="login()">
 
 MASUK
@@ -173,10 +145,7 @@ MASUK
 `;
 
 
-
 }
-
-
 
 
 
@@ -203,7 +172,6 @@ Buat Akun Baru
 </h3>
 
 
-
 <input
 
 id="nama"
@@ -211,7 +179,6 @@ id="nama"
 placeholder="Nama Lengkap"
 
 >
-
 
 
 <input
@@ -225,13 +192,11 @@ placeholder="Buat PIN"
 >
 
 
-
 <button onclick="register()">
 
 DAFTAR
 
 </button>
-
 
 
 </div>
@@ -240,10 +205,7 @@ DAFTAR
 `;
 
 
-
 }
-
-
 
 
 
@@ -256,7 +218,6 @@ DAFTAR
 // ======================================
 
 function login(){
-
 
 
 const whatsapp =
@@ -302,33 +263,24 @@ return;
 
 fetch(API_URL,{
 
+    method:"POST",
 
-method:"POST",
+    body:JSON.stringify({
 
+        action:"login",
 
-body:JSON.stringify({
+        data:{
 
+            whatsapp:whatsapp,
 
-action:"login",
+            pin:pin
 
+        }
 
-data:{
-
-
-whatsapp:whatsapp,
-
-
-pin:pin
-
-
-}
+    })
 
 
 })
-
-
-})
-
 
 
 .then(response=>response.json())
@@ -345,11 +297,19 @@ if(result.status){
 
 
 
+localStorage.setItem(
+
+"user",
+
+JSON.stringify(result.data)
+
+);
+
+
+
 showMessage(
 
-"Login berhasil. Halo " 
-+
-result.data.nama,
+"Login berhasil",
 
 "success"
 
@@ -357,35 +317,17 @@ result.data.nama,
 
 
 
-// simpan session sederhana
-
-localStorage.setItem(
-
-"user",
-
-JSON.stringify(
-result.data
-)
-
-);
-
-
-
-
-// lanjut halaman peserta nanti
-
 setTimeout(()=>{
 
 
 goToDashboard();
 
 
-},1000);
+},800);
 
 
 
 }
-
 
 else{
 
@@ -412,7 +354,6 @@ result.message,
 console.error(error);
 
 
-
 showMessage(
 
 "Gagal login",
@@ -423,7 +364,6 @@ showMessage(
 
 
 });
-
 
 
 }
@@ -441,7 +381,6 @@ showMessage(
 // ======================================
 
 function register(){
-
 
 
 const whatsapp =
@@ -473,7 +412,6 @@ document
 
 
 
-
 if(!nama || !pin){
 
 
@@ -497,36 +435,26 @@ return;
 
 fetch(API_URL,{
 
+    method:"POST",
 
-method:"POST",
+    body:JSON.stringify({
 
+        action:"register",
 
-body:JSON.stringify({
+        data:{
 
+            nama:nama,
 
-action:"register",
+            whatsapp:whatsapp,
 
+            pin:pin
 
-data:{
+        }
 
-
-nama:nama,
-
-
-whatsapp:whatsapp,
-
-
-pin:pin
-
-
-}
+    })
 
 
 })
-
-
-})
-
 
 
 .then(response=>response.json())
@@ -542,7 +470,6 @@ console.log(result);
 if(result.status){
 
 
-
 showMessage(
 
 "Registrasi berhasil",
@@ -552,8 +479,6 @@ showMessage(
 );
 
 
-
-// otomatis login
 
 setTimeout(()=>{
 
@@ -566,7 +491,6 @@ login();
 
 
 }
-
 
 else{
 
@@ -593,7 +517,6 @@ result.message,
 console.error(error);
 
 
-
 showMessage(
 
 "Gagal registrasi",
@@ -604,7 +527,6 @@ showMessage(
 
 
 });
-
 
 
 }
@@ -618,10 +540,11 @@ showMessage(
 
 
 // ======================================
-// DASHBOARD PESERTA SEMENTARA
+// DASHBOARD PESERTA
 // ======================================
 
-function goToDashboard(){function goToDashboard(){
+function goToDashboard(){
+
 
 
 const user =
@@ -639,6 +562,7 @@ localStorage.getItem("user")
 document.getElementById(
 "formArea"
 ).innerHTML = `
+
 
 
 <div class="card">
@@ -666,9 +590,7 @@ ${user.idPeserta}
 
 
 <p>
-
 Tunjukkan QR ini saat check-in
-
 </p>
 
 
@@ -684,12 +606,13 @@ Tunjukkan QR ini saat check-in
 
 new QRCode(
 
+
 document.getElementById(
 "qrcode"
 ),
 
-{
 
+{
 
 text:
 user.idPeserta,
@@ -702,15 +625,17 @@ width:
 height:
 220
 
-
-
 }
+
 
 );
 
 
 
 }
+
+
+
 
 
 
@@ -732,10 +657,16 @@ document.getElementById(
 
 
 
+if(box){
+
+
 box.innerHTML=text;
 
 
 box.className=type;
+
+
+}
 
 
 
