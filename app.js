@@ -1588,79 +1588,23 @@ height:
 }
 
 // ======================================
-// LOAD PRODUCTS
-// PART 3
+// MERCHANDISE ORDER SYSTEM
+// PART 3 REPLACEMENT
 // ======================================
 
 
+
+// ======================================
+// LOAD MERCH PAGE
+// ======================================
+
 function loadProducts(){
-
-
-
-fetch(API_URL,{
-
-
-method:"POST",
-
-
-body:JSON.stringify({
-
-
-action:"products"
-
-
-})
-
-
-})
-
-
-.then(res=>res.json())
-
-
-.then(result=>{
-
-
-console.log(result);
-
-
-
-if(result.status){
-
-
-products = result.data;
 
 
 cart = [];
 
 
-renderProducts();
-
-
-}
-
-
-
-})
-
-
-.catch(err=>{
-
-
-console.error(err);
-
-
-showMessage(
-
-"Gagal mengambil produk",
-
-"error"
-
-);
-
-
-});
-
+renderMerchPage();
 
 
 }
@@ -1672,13 +1616,11 @@ showMessage(
 
 
 
-
 // ======================================
-// RENDER PRODUCTS
+// RENDER MERCH PAGE
 // ======================================
 
-
-function renderProducts(){
+function renderMerchPage(){
 
 
 
@@ -1697,6 +1639,7 @@ class="logo"
 >
 
 
+
 <h2>
 
 MERCHANDISE
@@ -1705,7 +1648,273 @@ MERCHANDISE
 
 
 
-<div id="productList"></div>
+
+
+<div class="card">
+
+
+<h3>
+
+T-Shirt
+
+</h3>
+
+
+
+
+<label>
+
+Ukuran
+
+</label>
+
+
+
+<select id="shirtSize">
+
+
+<option value="M">
+M
+</option>
+
+
+<option value="L">
+L
+</option>
+
+
+<option value="XL">
+XL
+</option>
+
+
+<option value="2XL">
+2XL
+</option>
+
+
+<option value="3XL">
+3XL
+</option>
+
+
+<option value="4XL">
+4XL
+</option>
+
+
+
+</select>
+
+
+
+
+
+<br><br>
+
+
+
+
+<label>
+
+☐ Lengan Panjang
+
+</label>
+
+
+<input
+
+type="checkbox"
+
+id="longSleeve"
+
+>
+
+
+
+
+<br><br>
+
+
+
+
+<label>
+
+Jumlah
+
+</label>
+
+
+
+<div class="qty-box">
+
+
+<button onclick="changeQty('shirtQty',-1)">
+
+-
+
+</button>
+
+
+
+<span id="shirtQty">
+
+1
+
+</span>
+
+
+
+<button onclick="changeQty('shirtQty',1)">
+
++
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<button onclick="addTshirt()">
+
+TAMBAH T-SHIRT
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+LA BOLD 16
+
+</h3>
+
+
+
+
+<div class="qty-box">
+
+
+<button onclick="changeQty('boldQty',-1)">
+
+-
+
+</button>
+
+
+
+<span id="boldQty">
+
+1
+
+</span>
+
+
+
+<button onclick="changeQty('boldQty',1)">
+
++
+
+</button>
+
+
+
+</div>
+
+
+
+
+<button onclick="addSimpleProduct('BAD-P013','boldQty')">
+
+TAMBAH
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+Prost Beer
+
+</h3>
+
+
+
+
+<div class="qty-box">
+
+
+<button onclick="changeQty('beerQty',-1)">
+
+-
+
+</button>
+
+
+
+<span id="beerQty">
+
+1
+
+</span>
+
+
+
+<button onclick="changeQty('beerQty',1)">
+
++
+
+</button>
+
+
+
+</div>
+
+
+
+
+<button onclick="addSimpleProduct('BAD-P014','beerQty')">
+
+TAMBAH
+
+</button>
+
+
+</div>
+
+
+
+
 
 
 
@@ -1721,11 +1930,27 @@ KERANJANG
 </h3>
 
 
-<div id="cartSummary">
+
+<div id="cartList">
 
 Belum ada produk
 
 </div>
+
+
+
+<hr>
+
+
+
+<div id="cartTotal">
+
+</div>
+
+
+
+<br>
+
 
 
 <button onclick="checkout()">
@@ -1735,7 +1960,9 @@ CHECKOUT
 </button>
 
 
+
 </div>
+
 
 
 
@@ -1756,109 +1983,7 @@ KEMBALI
 
 
 
-
-
-const area =
-
-document.getElementById(
-"productList"
-);
-
-
-
-
-
-products.forEach(product=>{
-
-
-const current =
-
-getCartQty(
-
-product.idProduk
-
-);
-
-
-
-
-
-area.innerHTML += `
-
-
-<div class="card product-card">
-
-
-<h3>
-
-${product.namaProduk}
-
-</h3>
-
-
-
-<p>
-
-${product.varian}
-
-</p>
-
-
-
-<p>
-
-Rp${Number(product.harga)
-.toLocaleString()}
-
-</p>
-
-
-
-
-<div class="qty-box">
-
-
-<button onclick="minusProduct('${product.idProduk}')">
-
--
-
-</button>
-
-
-
-<span class="qty">
-
-${current}
-
-</span>
-
-
-
-<button onclick="plusProduct('${product.idProduk}')">
-
-+
-
-</button>
-
-
-
-</div>
-
-
-
-</div>
-
-
-`;
-
-
-
-});
-
-
-
-
-updateCartSummary();
+updateCartView();
 
 
 
@@ -1873,11 +1998,228 @@ updateCartSummary();
 
 
 // ======================================
-// TAMBAH PRODUK
+// QUANTITY CONTROL
 // ======================================
 
+function changeQty(id,value){
 
-function plusProduct(idProduk){
+
+
+let element =
+
+document.getElementById(id);
+
+
+
+let qty =
+
+Number(element.innerHTML);
+
+
+
+qty += value;
+
+
+
+if(qty < 1){
+
+qty = 1;
+
+}
+
+
+
+element.innerHTML = qty;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================
+// TAMBAH T-SHIRT
+// ======================================
+
+function addTshirt(){
+
+
+
+const size =
+
+document.getElementById(
+"shirtSize"
+)
+.value;
+
+
+
+const longSleeve =
+
+document.getElementById(
+"longSleeve"
+)
+.checked;
+
+
+
+
+
+let idProduk = "";
+
+
+
+
+
+if(longSleeve){
+
+
+
+const map = {
+
+
+"M":"BAD-P007",
+
+"L":"BAD-P008",
+
+"XL":"BAD-P009",
+
+"2XL":"BAD-P010",
+
+"3XL":"BAD-P011",
+
+"4XL":"BAD-P012"
+
+
+};
+
+
+
+idProduk =
+map[size];
+
+
+
+}
+
+else{
+
+
+const map = {
+
+
+"M":"BAD-P001",
+
+"L":"BAD-P002",
+
+"XL":"BAD-P003",
+
+"2XL":"BAD-P004",
+
+"3XL":"BAD-P005",
+
+"4XL":"BAD-P006"
+
+
+};
+
+
+
+idProduk =
+map[size];
+
+
+}
+
+
+
+
+
+const qty =
+
+Number(
+
+document.getElementById(
+"shirtQty"
+)
+.innerHTML
+
+);
+
+
+
+
+addCart(
+
+idProduk,
+
+qty
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================
+// TAMBAH PRODUK NON APPAREL
+// ======================================
+
+function addSimpleProduct(idProduk,qtyElement){
+
+
+
+const qty =
+
+Number(
+
+document.getElementById(
+qtyElement
+)
+.innerHTML
+
+);
+
+
+
+addCart(
+
+idProduk,
+
+qty
+
+);
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================
+// ADD CART
+// ======================================
+
+function addCart(idProduk,qty){
 
 
 
@@ -1885,7 +2227,9 @@ let item =
 
 cart.find(
 
-x=>x.idProduk===idProduk
+x=>
+
+x.idProduk===idProduk
 
 );
 
@@ -1895,7 +2239,7 @@ x=>x.idProduk===idProduk
 if(item){
 
 
-item.qty++;
+item.qty += qty;
 
 
 }
@@ -1905,12 +2249,9 @@ else{
 
 cart.push({
 
-
 idProduk:idProduk,
 
-
-qty:1
-
+qty:qty
 
 });
 
@@ -1919,7 +2260,7 @@ qty:1
 
 
 
-renderProducts();
+updateCartView();
 
 
 
@@ -1934,26 +2275,49 @@ renderProducts();
 
 
 // ======================================
-// KURANGI PRODUK
+// CART VIEW
 // ======================================
 
-
-function minusProduct(idProduk){
-
+function updateCartView(){
 
 
-let item =
 
-cart.find(
+const area =
 
-x=>x.idProduk===idProduk
+document.getElementById(
+"cartList"
+);
 
+
+
+const totalArea =
+
+document.getElementById(
+"cartTotal"
 );
 
 
 
 
-if(!item){
+if(!area){
+
+return;
+
+}
+
+
+
+
+
+if(cart.length===0){
+
+
+area.innerHTML =
+
+"Belum ada produk";
+
+
+totalArea.innerHTML="";
 
 
 return;
@@ -1963,90 +2327,14 @@ return;
 
 
 
-item.qty--;
 
 
 
-if(item.qty<=0){
+let html="";
 
+let total=0;
 
-cart = cart.filter(
-
-x=>x.idProduk!==idProduk
-
-);
-
-
-}
-
-
-
-renderProducts();
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ======================================
-// AMBIL JUMLAH DI CART
-// ======================================
-
-
-function getCartQty(idProduk){
-
-
-const item =
-
-cart.find(
-
-x=>x.idProduk===idProduk
-
-);
-
-
-
-return item ?
-
-item.qty :
-
-0;
-
-
-}
-
-
-
-
-
-
-
-
-
-// ======================================
-// UPDATE SUMMARY
-// ======================================
-
-
-function updateCartSummary(){
-
-
-
-let total = 0;
-
-
-let kupon = 0;
-
-
-
-let detail = "";
+let kupon=0;
 
 
 
@@ -2055,45 +2343,18 @@ let detail = "";
 cart.forEach(item=>{
 
 
+
 const product =
 
-products.find(
-
-p=>
-
-p.idProduk===item.idProduk
-
+getProductInfo(
+item.idProduk
 );
 
 
 
 
-if(product){
+html += `
 
-
-
-total +=
-
-Number(product.harga)
-
-*
-
-item.qty;
-
-
-
-kupon +=
-
-Number(product.jumlahKupon)
-
-*
-
-item.qty;
-
-
-
-
-detail += `
 
 <p>
 
@@ -2105,11 +2366,24 @@ x${item.qty}
 
 </p>
 
+
 `;
 
 
 
-}
+total +=
+
+product.harga *
+
+item.qty;
+
+
+
+kupon +=
+
+product.jumlahKupon *
+
+item.qty;
 
 
 
@@ -2119,38 +2393,13 @@ x${item.qty}
 
 
 
-if(cart.length===0){
 
-
-document.getElementById(
-
-"cartSummary"
-
-).innerHTML =
-
-"Belum ada produk";
-
-
-return;
-
-
-}
+area.innerHTML = html;
 
 
 
 
-
-document.getElementById(
-
-"cartSummary"
-
-).innerHTML = `
-
-
-${detail}
-
-
-<hr>
+totalArea.innerHTML = `
 
 
 Total:
@@ -2162,7 +2411,7 @@ Rp${total.toLocaleString()}
 </b>
 
 
-<br><br>
+<br>
 
 
 Kupon:
@@ -2180,6 +2429,98 @@ ${kupon}
 
 }
 
+
+
+
+
+
+
+
+
+// ======================================
+// GET PRODUCT INFO
+// ======================================
+
+function getProductInfo(idProduk){
+
+
+
+const mapping = {
+
+
+"BAD-P001":{
+namaProduk:"T-Shirt",
+varian:"M Pendek",
+harga:100000,
+jumlahKupon:2
+},
+
+
+"BAD-P002":{
+namaProduk:"T-Shirt",
+varian:"L Pendek",
+harga:100000,
+jumlahKupon:2
+},
+
+
+"BAD-P003":{
+namaProduk:"T-Shirt",
+varian:"XL Pendek",
+harga:100000,
+jumlahKupon:2
+},
+
+
+"BAD-P007":{
+namaProduk:"T-Shirt",
+varian:"M Panjang",
+harga:110000,
+jumlahKupon:2
+},
+
+
+"BAD-P008":{
+namaProduk:"T-Shirt",
+varian:"L Panjang",
+harga:110000,
+jumlahKupon:2
+},
+
+
+"BAD-P009":{
+namaProduk:"T-Shirt",
+varian:"XL Panjang",
+harga:110000,
+jumlahKupon:2
+},
+
+
+"BAD-P013":{
+namaProduk:"LA BOLD 16",
+varian:"",
+harga:40000,
+jumlahKupon:1
+},
+
+
+"BAD-P014":{
+namaProduk:"Prost Beer",
+varian:"",
+harga:45000,
+jumlahKupon:1
+}
+
+
+
+};
+
+
+
+return mapping[idProduk];
+
+
+}
 // ======================================
 // CHECKOUT TRANSACTION
 // PART 4
