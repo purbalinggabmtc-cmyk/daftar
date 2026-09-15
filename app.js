@@ -320,6 +320,9 @@ showMessage(
 setTimeout(()=>{
 
 
+hideLoginForm();
+
+
 goToDashboard();
 
 
@@ -328,7 +331,7 @@ goToDashboard();
 
 
 }
-
+    
 else{
 
 
