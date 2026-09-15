@@ -1,7 +1,674 @@
+// ======================================
+// BOLD AFTER DARK
+// PESERTA APP
+// APP.JS FINAL
+// PART 1
+// ======================================
+
+
+
 const API_URL =
 "https://script.google.com/macros/s/AKfycbyCwRWw3LaA7-nDq7CLQ_uDZK2n275Ad-a0O3qZI3VjglHTbEuV9E32DvWJWZw2XjzZ0w/exec";
 
 
+
+
+// ======================================
+// GLOBAL STATE
+// ======================================
+
+
+let products = [];
+
+let cart = [];
+
+
+
+
+
+// ======================================
+// LOAD SESSION
+// ======================================
+
+
+window.onload = function(){
+
+
+const user =
+
+localStorage.getItem("user");
+
+
+
+if(user){
+
+
+showDashboard();
+
+
+}
+
+
+
+};
+
+
+
+
+
+
+
+
+
+// ======================================
+// CHECK WHATSAPP
+// ======================================
+
+
+function checkWhatsApp(){
+
+
+
+const whatsapp =
+
+document
+.getElementById("whatsapp")
+.value
+.trim();
+
+
+
+
+if(!whatsapp){
+
+
+showMessage(
+
+"Nomor WhatsApp wajib diisi",
+
+"error"
+
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+
+fetch(API_URL,{
+
+
+method:"POST",
+
+
+body:JSON.stringify({
+
+
+action:"checkUser",
+
+
+data:{
+
+
+whatsapp:whatsapp
+
+
+}
+
+
+})
+
+
+})
+
+
+
+.then(res=>res.json())
+
+
+.then(result=>{
+
+
+console.log(result);
+
+
+
+if(result.registered){
+
+
+showPIN();
+
+
+
+}
+
+else{
+
+
+showRegister();
+
+
+
+}
+
+
+
+})
+
+
+.catch(err=>{
+
+
+console.error(err);
+
+
+showMessage(
+
+"Gagal koneksi server",
+
+"error"
+
+);
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================
+// FORM LOGIN PIN
+// ======================================
+
+
+function showPIN(){
+
+
+
+document.getElementById(
+"formArea"
+).innerHTML = `
+
+
+<div class="card">
+
+
+<h3>
+Masukkan PIN
+</h3>
+
+
+
+<input
+
+id="pin"
+
+type="password"
+
+placeholder="PIN"
+
+>
+
+
+
+<button onclick="login()">
+
+MASUK
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================
+// FORM REGISTER
+// ======================================
+
+
+function showRegister(){
+
+
+
+document.getElementById(
+"formArea"
+).innerHTML = `
+
+
+<div class="card">
+
+
+<h3>
+Buat Akun Baru
+</h3>
+
+
+
+
+<input
+
+id="nama"
+
+placeholder="Nama Lengkap"
+
+>
+
+
+
+
+<input
+
+id="pin"
+
+type="password"
+
+placeholder="Buat PIN"
+
+>
+
+
+
+
+<button onclick="register()">
+
+DAFTAR
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================
+// LOGIN PESERTA
+// ======================================
+
+
+function login(){
+
+
+
+const whatsapp =
+
+document
+.getElementById("whatsapp")
+.value
+.trim();
+
+
+
+
+const pin =
+
+document
+.getElementById("pin")
+.value
+.trim();
+
+
+
+
+if(!pin){
+
+
+showMessage(
+
+"PIN wajib diisi",
+
+"error"
+
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+fetch(API_URL,{
+
+
+method:"POST",
+
+
+body:JSON.stringify({
+
+
+action:"login",
+
+
+data:{
+
+
+whatsapp:whatsapp,
+
+
+pin:pin
+
+
+}
+
+
+})
+
+
+})
+
+
+
+.then(res=>res.json())
+
+
+.then(result=>{
+
+
+console.log(result);
+
+
+
+if(result.status){
+
+
+
+localStorage.setItem(
+
+"user",
+
+JSON.stringify(result.data)
+
+);
+
+
+
+
+showMessage(
+
+"Login berhasil",
+
+"success"
+
+);
+
+
+
+
+setTimeout(()=>{
+
+
+showDashboard();
+
+
+},700);
+
+
+
+}
+
+else{
+
+
+showMessage(
+
+result.message,
+
+"error"
+
+);
+
+
+}
+
+
+
+})
+
+
+.catch(err=>{
+
+
+console.error(err);
+
+
+showMessage(
+
+"Gagal login",
+
+"error"
+
+);
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================================
+// REGISTER PESERTA
+// ======================================
+
+
+function register(){
+
+
+
+const whatsapp =
+
+document
+.getElementById("whatsapp")
+.value
+.trim();
+
+
+
+
+const nama =
+
+document
+.getElementById("nama")
+.value
+.trim();
+
+
+
+
+const pin =
+
+document
+.getElementById("pin")
+.value
+.trim();
+
+
+
+
+if(!nama || !pin){
+
+
+showMessage(
+
+"Nama dan PIN wajib diisi",
+
+"error"
+
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+
+fetch(API_URL,{
+
+
+method:"POST",
+
+
+body:JSON.stringify({
+
+
+action:"register",
+
+
+data:{
+
+
+nama:nama,
+
+
+whatsapp:whatsapp,
+
+
+pin:pin
+
+
+}
+
+
+})
+
+
+})
+
+
+
+.then(res=>res.json())
+
+
+.then(result=>{
+
+
+console.log(result);
+
+
+
+if(result.status){
+
+
+
+showMessage(
+
+"Registrasi berhasil",
+
+"success"
+
+);
+
+
+
+setTimeout(()=>{
+
+
+login();
+
+
+},800);
+
+
+
+}
+
+else{
+
+
+showMessage(
+
+result.message,
+
+"error"
+
+);
+
+
+}
+
+
+
+})
+
+
+.catch(err=>{
+
+
+console.error(err);
+
+
+showMessage(
+
+"Gagal registrasi",
+
+"error"
+
+);
+
+
+});
+
+
+
+}
 
 // ======================================
 // CHECK SESSION
