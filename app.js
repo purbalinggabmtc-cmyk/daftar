@@ -4,7 +4,7 @@ const API_URL =
 
 
 // ======================================
-// AUTO CHECK SESSION
+// CHECK SESSION
 // ======================================
 
 window.onload = function(){
@@ -14,18 +14,17 @@ const user =
 localStorage.getItem("user");
 
 
-
 if(user){
 
 
-goToDashboard();
+showDashboard();
 
 
 }
 
 
-
 };
+
 
 
 
@@ -50,15 +49,12 @@ document
 
 if(!whatsapp){
 
-
 showMessage(
 "Nomor WhatsApp wajib diisi",
 "error"
 );
 
-
 return;
-
 
 }
 
@@ -73,9 +69,7 @@ body:JSON.stringify({
 action:"checkUser",
 
 data:{
-
 whatsapp:whatsapp
-
 }
 
 })
@@ -83,7 +77,8 @@ whatsapp:whatsapp
 })
 
 
-.then(response=>response.json())
+
+.then(res=>res.json())
 
 
 .then(result=>{
@@ -100,35 +95,14 @@ showPIN();
 
 
 
-}
-
-else{
+}else{
 
 
 showRegister();
 
 
-
 }
 
-
-
-})
-
-
-.catch(error=>{
-
-
-console.error(error);
-
-
-showMessage(
-
-"Gagal terhubung ke server",
-
-"error"
-
-);
 
 
 });
@@ -145,10 +119,11 @@ showMessage(
 
 
 // ======================================
-// FORM PIN
+// LOGIN FORM
 // ======================================
 
 function showPIN(){
+
 
 
 document.getElementById(
@@ -160,7 +135,7 @@ document.getElementById(
 
 
 <h3>
-Verifikasi PIN
+Masukkan PIN
 </h3>
 
 
@@ -170,7 +145,7 @@ id="pin"
 
 type="password"
 
-placeholder="Masukkan PIN"
+placeholder="PIN"
 
 >
 
@@ -198,12 +173,12 @@ MASUK
 
 
 
-
 // ======================================
-// FORM REGISTER
+// REGISTER FORM
 // ======================================
 
 function showRegister(){
+
 
 
 document.getElementById(
@@ -288,27 +263,6 @@ document
 
 
 
-
-if(!pin){
-
-
-showMessage(
-
-"PIN wajib diisi",
-
-"error"
-
-);
-
-
-return;
-
-
-}
-
-
-
-
 fetch(API_URL,{
 
 method:"POST",
@@ -330,7 +284,8 @@ pin:pin
 })
 
 
-.then(response=>response.json())
+
+.then(res=>res.json())
 
 
 .then(result=>{
@@ -343,7 +298,6 @@ console.log(result);
 if(result.status){
 
 
-
 localStorage.setItem(
 
 "user",
@@ -354,29 +308,11 @@ JSON.stringify(result.data)
 
 
 
-showMessage(
-
-"Login berhasil",
-
-"success"
-
-);
+showDashboard();
 
 
 
-setTimeout(()=>{
-
-
-goToDashboard();
-
-
-},700);
-
-
-
-}
-
-else{
+}else{
 
 
 showMessage(
@@ -392,26 +328,7 @@ result.message,
 
 
 
-})
-
-
-.catch(error=>{
-
-
-console.error(error);
-
-
-showMessage(
-
-"Gagal login",
-
-"error"
-
-);
-
-
 });
-
 
 
 }
@@ -459,25 +376,6 @@ document
 
 
 
-if(!nama || !pin){
-
-
-showMessage(
-
-"Nama dan PIN wajib diisi",
-
-"error"
-
-);
-
-
-return;
-
-
-}
-
-
-
 
 fetch(API_URL,{
 
@@ -502,7 +400,8 @@ pin:pin
 })
 
 
-.then(response=>response.json())
+
+.then(res=>res.json())
 
 
 .then(result=>{
@@ -515,29 +414,10 @@ console.log(result);
 if(result.status){
 
 
-showMessage(
-
-"Registrasi berhasil",
-
-"success"
-
-);
-
-
-
-setTimeout(()=>{
-
-
 login();
 
 
-},800);
-
-
-
-}
-
-else{
+}else{
 
 
 showMessage(
@@ -553,26 +433,7 @@ result.message,
 
 
 
-})
-
-
-.catch(error=>{
-
-
-console.error(error);
-
-
-showMessage(
-
-"Gagal registrasi",
-
-"error"
-
-);
-
-
 });
-
 
 
 }
@@ -589,12 +450,7 @@ showMessage(
 // DASHBOARD PESERTA
 // ======================================
 
-// ======================================
-// DASHBOARD PESERTA
-// ======================================
-
-function goToDashboard(){
-
+function showDashboard(){
 
 
 const user =
@@ -607,72 +463,12 @@ localStorage.getItem("user")
 
 
 
+if(!user){
 
-fetch(API_URL,{
-
-method:"POST",
-
-body:JSON.stringify({
-
-
-action:"dashboardPeserta",
-
-
-data:{
-
-
-idPeserta:user.idPeserta
-
+return;
 
 }
 
-
-})
-
-
-})
-
-
-.then(response=>response.json())
-
-
-.then(result=>{
-
-
-console.log(result);
-
-
-
-if(result.status){
-
-
-renderDashboard(
-result.data
-);
-
-
-
-}
-
-
-
-});
-
-
-
-}
-
-
-
-
-
-
-
-// ======================================
-// RENDER DASHBOARD
-// ======================================
-
-function renderDashboard(data){
 
 
 
@@ -682,13 +478,20 @@ document.body.innerHTML = `
 <div class="container">
 
 
+<img
+
+src="logo.png"
+
+class="logo"
+
+>
+
 
 <div class="card">
 
 
-
 <h2>
-Halo ${data.nama} 👋
+Halo ${user.nama}
 </h2>
 
 
@@ -699,9 +502,8 @@ ID Peserta
 
 
 <h3>
-${data.idPeserta}
+${user.idPeserta}
 </h3>
-
 
 
 
@@ -714,8 +516,25 @@ Tunjukkan QR ini saat check-in
 </p>
 
 
+
 </div>
 
+
+
+<div class="card">
+
+
+<h3>
+Status Peserta
+</h3>
+
+
+<p>
+✅ Registrasi Berhasil
+</p>
+
+
+</div>
 
 
 
@@ -724,67 +543,20 @@ Tunjukkan QR ini saat check-in
 
 
 <h3>
-STATUS PESERTA
+Merchandise
 </h3>
 
 
 <p>
-🟢 ${data.checkin}
+Belum ada pembelian
 </p>
 
 
-</div>
-
-
-
-
-
-<div class="card">
-
-
-<h3>
-MERCHANDISE
-</h3>
-
-
-<p>
-${data.transaksi}
-</p>
-
-
-<p>
-Total:
-Rp${data.total}
-</p>
-
-
-
-<button>
+<button onclick="alert('Menu merch belum dibuat')">
 
 BELI MERCH
 
 </button>
-
-
-</div>
-
-
-
-
-
-
-<div class="card">
-
-
-<h3>
-KUPON UNDIAN
-</h3>
-
-
-<h2>
-🎟 ${data.jumlahKupon}
-Kupon
-</h2>
 
 
 </div>
@@ -803,6 +575,7 @@ LOGOUT
 </div>
 
 
+
 `;
 
 
@@ -811,33 +584,51 @@ LOGOUT
 
 new QRCode(
 
-
-document.getElementById(
-"qrcode"
-),
-
+document.getElementById("qrcode"),
 
 {
 
-text:
-data.idPeserta,
-
+text:user.idPeserta,
 
 width:220,
 
-
 height:220
 
-
 }
-
-
 
 );
 
 
 
 }
+
+
+
+
+
+
+
+
+// ======================================
+// LOGOUT
+// ======================================
+
+function logout(){
+
+
+localStorage.removeItem(
+"user"
+);
+
+
+location.reload();
+
+
+}
+
+
+
+
 
 
 
@@ -870,19 +661,3 @@ box.className=type;
 
 
 }
-
-
-function logout(){
-
-
-localStorage.removeItem(
-"user"
-);
-
-
-location.reload();
-
-
-}
-
-
