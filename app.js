@@ -589,7 +589,12 @@ showMessage(
 // DASHBOARD PESERTA
 // ======================================
 
+// ======================================
+// DASHBOARD PESERTA
+// ======================================
+
 function goToDashboard(){
+
 
 
 const user =
@@ -603,12 +608,71 @@ localStorage.getItem("user")
 
 
 
+fetch(API_URL,{
 
-if(!user){
+method:"POST",
 
-return;
+body:JSON.stringify({
+
+
+action:"dashboardPeserta",
+
+
+data:{
+
+
+idPeserta:user.idPeserta
+
 
 }
+
+
+})
+
+
+})
+
+
+.then(response=>response.json())
+
+
+.then(result=>{
+
+
+console.log(result);
+
+
+
+if(result.status){
+
+
+renderDashboard(
+result.data
+);
+
+
+
+}
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+// ======================================
+// RENDER DASHBOARD
+// ======================================
+
+function renderDashboard(data){
 
 
 
@@ -618,11 +682,13 @@ document.body.innerHTML = `
 <div class="container">
 
 
+
 <div class="card">
 
 
+
 <h2>
-Halo ${user.nama}
+Halo ${data.nama} 👋
 </h2>
 
 
@@ -632,10 +698,10 @@ ID Peserta
 </p>
 
 
-
 <h3>
-${user.idPeserta}
+${data.idPeserta}
 </h3>
+
 
 
 
@@ -648,8 +714,90 @@ Tunjukkan QR ini saat check-in
 </p>
 
 
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+STATUS PESERTA
+</h3>
+
+
+<p>
+🟢 ${data.checkin}
+</p>
+
 
 </div>
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+MERCHANDISE
+</h3>
+
+
+<p>
+${data.transaksi}
+</p>
+
+
+<p>
+Total:
+Rp${data.total}
+</p>
+
+
+
+<button>
+
+BELI MERCH
+
+</button>
+
+
+</div>
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+KUPON UNDIAN
+</h3>
+
+
+<h2>
+🎟 ${data.jumlahKupon}
+Kupon
+</h2>
+
+
+</div>
+
+
+
+
+<button onclick="logout()">
+
+LOGOUT
+
+</button>
+
 
 
 </div>
@@ -672,18 +820,13 @@ document.getElementById(
 {
 
 text:
-
-user.idPeserta,
-
-
-width:
-
-220,
+data.idPeserta,
 
 
-height:
+width:220,
 
-220
+
+height:220
 
 
 }
@@ -695,12 +838,6 @@ height:
 
 
 }
-
-
-
-
-
-
 
 
 
