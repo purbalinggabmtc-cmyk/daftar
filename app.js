@@ -1330,8 +1330,7 @@ box.className=type;
 }
 
 // ======================================
-// DASHBOARD PESERTA
-// PART 2
+// DASHBOARD PESERTA REAL TIME
 // ======================================
 
 
@@ -1349,8 +1348,6 @@ localStorage.getItem("user")
 
 
 
-
-
 if(!user){
 
 
@@ -1364,224 +1361,94 @@ return;
 
 
 
+fetch(API_URL,{
 
-document.body.innerHTML = `
 
+method:"POST",
 
-<div class="container">
 
+body:JSON.stringify({
 
 
-<img
+action:"dashboardPeserta",
 
-src="logo.png"
 
-class="logo"
+data:{
 
->
 
+idPeserta:
 
+user.idPeserta
 
 
-<div class="card">
+}
 
 
-<h2>
+})
 
-Halo ${user.nama} 👋
 
-</h2>
+})
 
 
 
-<p>
+.then(response=>response.json())
 
-ID Peserta
 
-</p>
+.then(result=>{
 
 
+console.log(
+"Dashboard:",
+result
+);
 
-<h3>
 
-${user.idPeserta}
 
-</h3>
+if(result.status){
 
 
+renderDashboard(
+result.data
+);
 
 
+}
 
-<div id="qrcode"></div>
+else{
 
 
+showMessage(
 
+result.message,
 
-<p>
+"error"
 
-Tunjukkan QR ini saat check-in
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h3>
-
-STATUS PESERTA
-
-</h3>
-
-
-
-<p>
-
-🟢 Registrasi berhasil
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h3>
-
-MERCHANDISE
-
-</h3>
-
-
-
-<p>
-
-Belum ada pembelian
-
-</p>
-
-
-
-
-<button onclick="loadProducts()">
-
-BELI MERCH
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h3>
-
-KUPON UNDIAN
-
-</h3>
-
-
-<p>
-
-🎟 0 Kupon
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-
-<button onclick="logout()">
-
-LOGOUT
-
-</button>
-
-
-
-
-</div>
-
-
-`;
-
-
-
-
-
-
-
-// generate QR
-
-
-new QRCode(
-
-
-document.getElementById(
-
-"qrcode"
-
-),
-
-
-{
-
-
-text:
-
-user.qrCode,
-
-
-width:
-
-220,
-
-
-height:
-
-220
-
+);
 
 
 }
 
 
 
+})
+
+
+.catch(error=>{
+
+
+console.error(error);
+
+
+showMessage(
+
+"Gagal mengambil dashboard",
+
+"error"
+
 );
+
+
+});
 
 
 
@@ -2823,3 +2690,246 @@ KEMBALI DASHBOARD
 
 }
 
+// ======================================
+// RENDER DASHBOARD
+// ======================================
+
+
+function renderDashboard(data){
+
+
+
+document.body.innerHTML = `
+
+
+<div class="container">
+
+
+
+<img
+
+src="logo.png"
+
+class="logo"
+
+>
+
+
+
+<div class="card">
+
+
+<h2>
+
+Halo ${data.nama} 👋
+
+</h2>
+
+
+
+<h3>
+
+${data.idPeserta}
+
+</h3>
+
+
+
+<div id="qrcode"></div>
+
+
+
+<p>
+
+Tunjukkan QR ini saat check-in
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+STATUS PESERTA
+
+</h3>
+
+
+<p>
+
+${data.checkin}
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+MERCHANDISE
+
+</h3>
+
+
+${
+data.transaksi
+
+?
+
+`
+
+<p>
+
+${data.transaksi.detailProduk}
+
+</p>
+
+
+<p>
+
+Total:
+
+Rp${Number(data.transaksi.subTotal)
+.toLocaleString()}
+
+</p>
+
+
+
+<p>
+
+Status:
+
+${data.statusBayar}
+
+</p>
+
+
+`
+
+:
+
+`
+
+<p>
+
+Belum ada transaksi
+
+</p>
+
+
+`
+
+}
+
+
+
+<button onclick="loadProducts()">
+
+BELI MERCH
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+
+KUPON UNDIAN
+
+</h3>
+
+
+<h2>
+
+🎟 ${data.jumlahKupon}
+
+</h2>
+
+
+</div>
+
+
+
+
+
+<button onclick="logout()">
+
+LOGOUT
+
+</button>
+
+
+
+</div>
+
+
+`;
+
+
+
+
+
+
+new QRCode(
+
+
+document.getElementById(
+"qrcode"
+),
+
+
+{
+
+
+text:
+
+data.qrCode,
+
+
+width:
+
+220,
+
+
+height:
+
+220
+
+
+}
+
+
+);
+
+
+
+}
