@@ -4,94 +4,134 @@ const API_URL =
 
 
 // ======================================
+// AUTO CHECK SESSION
+// ======================================
+
+window.onload = function(){
+
+
+const user =
+localStorage.getItem("user");
+
+
+
+if(user){
+
+
+goToDashboard();
+
+
+}
+
+
+
+};
+
+
+
+
+
+
+// ======================================
 // CHECK WHATSAPP
 // ======================================
 
 function checkWhatsApp(){
 
 
-    const whatsapp =
-    document
-    .getElementById("whatsapp")
-    .value
-    .trim();
+const whatsapp =
+
+document
+.getElementById("whatsapp")
+.value
+.trim();
 
 
 
-    if(!whatsapp){
-
-        showMessage(
-            "Nomor WhatsApp wajib diisi",
-            "error"
-        );
-
-        return;
-
-    }
+if(!whatsapp){
 
 
-
-    fetch(API_URL,{
-
-        method:"POST",
-
-        body:JSON.stringify({
-
-            action:"checkUser",
-
-            data:{
-                whatsapp:whatsapp
-            }
-
-        })
-
-    })
+showMessage(
+"Nomor WhatsApp wajib diisi",
+"error"
+);
 
 
-    .then(response=>response.json())
+return;
 
 
-    .then(result=>{
-
-
-        console.log(result);
+}
 
 
 
-        if(result.registered){
+fetch(API_URL,{
+
+method:"POST",
+
+body:JSON.stringify({
+
+action:"checkUser",
+
+data:{
+
+whatsapp:whatsapp
+
+}
+
+})
+
+})
 
 
-            showPIN();
+.then(response=>response.json())
 
 
-        }
-        else{
+.then(result=>{
 
 
-            showRegister();
-
-
-        }
+console.log(result);
 
 
 
-    })
+if(result.registered){
 
 
-    .catch(error=>{
+showPIN();
 
 
-        console.error(error);
+
+}
+
+else{
 
 
-        showMessage(
-            "Gagal terhubung ke server",
-            "error"
-        );
+showRegister();
 
 
-    });
 
+}
+
+
+
+})
+
+
+.catch(error=>{
+
+
+console.error(error);
+
+
+showMessage(
+
+"Gagal terhubung ke server",
+
+"error"
+
+);
+
+
+});
 
 
 }
@@ -101,8 +141,11 @@ function checkWhatsApp(){
 
 
 
+
+
+
 // ======================================
-// FORM LOGIN PIN
+// FORM PIN
 // ======================================
 
 function showPIN(){
@@ -145,7 +188,11 @@ MASUK
 `;
 
 
+
 }
+
+
+
 
 
 
@@ -205,6 +252,7 @@ DAFTAR
 `;
 
 
+
 }
 
 
@@ -213,8 +261,10 @@ DAFTAR
 
 
 
+
+
 // ======================================
-// LOGIN PESERTA
+// LOGIN
 // ======================================
 
 function login(){
@@ -239,7 +289,6 @@ document
 
 
 
-
 if(!pin){
 
 
@@ -260,25 +309,23 @@ return;
 
 
 
-
 fetch(API_URL,{
 
-    method:"POST",
+method:"POST",
 
-    body:JSON.stringify({
+body:JSON.stringify({
 
-        action:"login",
+action:"login",
 
-        data:{
+data:{
 
-            whatsapp:whatsapp,
+whatsapp:whatsapp,
 
-            pin:pin
+pin:pin
 
-        }
+}
 
-    })
-
+})
 
 })
 
@@ -320,18 +367,15 @@ showMessage(
 setTimeout(()=>{
 
 
-hideLoginForm();
-
-
 goToDashboard();
 
 
-},800);
+},700);
 
 
 
 }
-    
+
 else{
 
 
@@ -369,6 +413,7 @@ showMessage(
 });
 
 
+
 }
 
 
@@ -380,7 +425,7 @@ showMessage(
 
 
 // ======================================
-// REGISTER PESERTA
+// REGISTER
 // ======================================
 
 function register(){
@@ -414,7 +459,6 @@ document
 
 
 
-
 if(!nama || !pin){
 
 
@@ -435,27 +479,25 @@ return;
 
 
 
-
 fetch(API_URL,{
 
-    method:"POST",
+method:"POST",
 
-    body:JSON.stringify({
+body:JSON.stringify({
 
-        action:"register",
+action:"register",
 
-        data:{
+data:{
 
-            nama:nama,
+nama:nama,
 
-            whatsapp:whatsapp,
+whatsapp:whatsapp,
 
-            pin:pin
+pin:pin
 
-        }
+}
 
-    })
-
+})
 
 })
 
@@ -489,7 +531,7 @@ setTimeout(()=>{
 login();
 
 
-},1000);
+},800);
 
 
 
@@ -532,6 +574,7 @@ showMessage(
 });
 
 
+
 }
 
 
@@ -549,7 +592,6 @@ showMessage(
 function goToDashboard(){
 
 
-
 const user =
 
 JSON.parse(
@@ -562,10 +604,18 @@ localStorage.getItem("user")
 
 
 
-document.getElementById(
-"formArea"
-).innerHTML = `
+if(!user){
 
+return;
+
+}
+
+
+
+document.body.innerHTML = `
+
+
+<div class="container">
 
 
 <div class="card">
@@ -582,6 +632,7 @@ ID Peserta
 </p>
 
 
+
 <h3>
 ${user.idPeserta}
 </h3>
@@ -596,6 +647,9 @@ ${user.idPeserta}
 Tunjukkan QR ini saat check-in
 </p>
 
+
+
+</div>
 
 
 </div>
@@ -618,17 +672,22 @@ document.getElementById(
 {
 
 text:
+
 user.idPeserta,
 
 
 width:
+
 220,
 
 
 height:
+
 220
 
+
 }
+
 
 
 );
@@ -644,12 +703,12 @@ height:
 
 
 
+
 // ======================================
 // MESSAGE
 // ======================================
 
 function showMessage(text,type){
-
 
 
 const box =
