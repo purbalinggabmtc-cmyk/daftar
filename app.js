@@ -1673,6 +1673,18 @@ function updateCartView(){
 
 
 // ======================================
+// HAPUS ITEM DARI CART
+// ======================================
+
+function hapusItem(index){
+  cart.splice(index, 1);
+  updateCartView();
+}
+
+
+
+
+// ======================================
 // GET PRODUCT INFO
 // ======================================
 
