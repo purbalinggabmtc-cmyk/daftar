@@ -2470,136 +2470,78 @@ alert(
 
 function showTransactionSuccess(data){
 
-
-
-document.body.innerHTML = `
-
-
-
-<div class="container">
-
-
-
-<img
-
-src="logo.png"
-
-class="logo"
-
->
-
-
-
-
-<div class="card">
-
-
-<h2>
-
-Transaksi Berhasil
-
-</h2>
-
-
-
-<p>
-
-ID Transaksi
-
-</p>
-
-
-
-<h3>
-
-${data.idTransaksi}
-
-</h3>
-
-
-
-
-
-<hr>
-
-
-
-
-<p>
-
-${data.detailProduk}
-
-</p>
-
-
-
-
-<h3>
-
-Rp${Number(data.subTotal)
-.toLocaleString()}
-
-</h3>
-
-
-
-
-
-<p>
-
-🎟 Kupon:
-
-<b>
-
-${data.jumlahKupon}
-
-</b>
-
-</p>
-
-
-
-
-<p>
-
-Status:
-
-<br>
-
-<b>
-
-Menunggu Pembayaran
-
-</b>
-
-</p>
-
-
-
-</div>
-
-
-
-
-
-
-<button onclick="showDashboard()">
-
-KEMBALI DASHBOARD
-
-</button>
-
-
-
-</div>
-
-
-
-`;
-
-
+  document.body.innerHTML = `
+
+  <div class="container">
+
+    <img
+      src="logo.png"
+      class="logo"
+    >
+
+    <div class="card">
+
+      <h2>
+        Transaksi Berhasil
+      </h2>
+
+      <p>
+        ID Transaksi
+      </p>
+
+      <h3>
+        ${data.idTransaksi}
+      </h3>
+
+      <hr>
+
+      <p>
+        ${data.detailProduk}
+      </p>
+
+      <h3>
+        Rp${Number(data.subTotal).toLocaleString()}
+      </h3>
+
+      <p>
+        🎟 Kupon:
+        <b>
+          ${data.jumlahKupon}
+        </b>
+      </p>
+
+      <p>
+        Status:
+        <br>
+        <b>
+          Menunggu Pembayaran
+        </b>
+      </p>
+
+      <button
+        id="btnBayar"
+        onclick="bayarSekarang('${data.idTransaksi}')"
+        style="background:#e11d2e;color:#fff;width:100%;
+               padding:14px;border:none;border-radius:8px;
+               font-weight:bold;cursor:pointer;font-size:16px;
+               margin-top:16px;"
+      >
+        💳 BAYAR SEKARANG
+      </button>
+
+    </div>
+
+    <button onclick="showDashboard()">
+      KEMBALI DASHBOARD
+    </button>
+
+  </div>
+
+  `;
 
 }
+
+
 
 // ======================================
 // RENDER DASHBOARD
