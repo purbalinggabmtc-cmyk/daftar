@@ -1234,377 +1234,108 @@ renderMerchPage();
 
 function renderMerchPage(){
 
+  document.body.innerHTML = `
 
+  <div class="container">
 
-document.body.innerHTML = `
+    <img src="logo.png" class="logo">
 
+    <h2>MERCHANDISE</h2>
 
-<div class="container">
+    <!-- T-SHIRT -->
+    <div class="card">
 
+      <h3>T-Shirt</h3>
 
-<img
+      <label>Ukuran</label>
 
-src="logo.png"
+      <select id="shirtSize">
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
+        <option value="2XL">2XL</option>
+        <option value="3XL">3XL</option>
+        <option value="4XL">4XL</option>
+      </select>
 
-class="logo"
+      <br><br>
 
->
+      <label>☐ Lengan Panjang</label>
+      <input type="checkbox" id="longSleeve">
 
+      <br><br>
 
+      <label>Jumlah</label>
 
-<h2>
+      <div class="merch-action">
+        <div class="qty-box">
+          <button onclick="changeQty('shirtQty',-1)">-</button>
+          <span id="shirtQty">1</span>
+          <button onclick="changeQty('shirtQty',1)">+</button>
+        </div>
+        <button onclick="addTshirt()">TAMBAH T-SHIRT</button>
+      </div>
 
-MERCHANDISE
+    </div>
 
-</h2>
+    <!-- LA BOLD 16 -->
+    <div class="card">
 
+      <h3>LA BOLD 16</h3>
 
+      <div class="merch-action">
+        <div class="qty-box">
+          <button onclick="changeQty('boldQty',-1)">-</button>
+          <span id="boldQty">1</span>
+          <button onclick="changeQty('boldQty',1)">+</button>
+        </div>
+        <button onclick="addSimpleProduct('BAD-P013','boldQty')">TAMBAH</button>
+      </div>
 
+    </div>
 
+    <!-- PROST BEER -->
+    <div class="card">
 
-<div class="card">
+      <h3>Prost Beer</h3>
 
+      <div class="merch-action">
+        <div class="qty-box">
+          <button onclick="changeQty('beerQty',-1)">-</button>
+          <span id="beerQty">1</span>
+          <button onclick="changeQty('beerQty',1)">+</button>
+        </div>
+        <button onclick="addSimpleProduct('BAD-P014','beerQty')">TAMBAH</button>
+      </div>
 
-<h3>
+    </div>
 
-T-Shirt
+    <!-- KERANJANG -->
+    <div class="card">
 
-</h3>
+      <h3>KERANJANG</h3>
 
+      <div id="cartList">Belum ada produk</div>
 
+      <hr>
 
+      <div id="cartTotal"></div>
 
-<label>
+      <br>
 
-Ukuran
+      <button onclick="checkout()">CHECKOUT</button>
 
-</label>
+    </div>
 
+    <button onclick="showDashboard()">KEMBALI</button>
 
+  </div>
 
-<select id="shirtSize">
+  `;
 
-
-<option value="M">
-M
-</option>
-
-
-<option value="L">
-L
-</option>
-
-
-<option value="XL">
-XL
-</option>
-
-
-<option value="2XL">
-2XL
-</option>
-
-
-<option value="3XL">
-3XL
-</option>
-
-
-<option value="4XL">
-4XL
-</option>
-
-
-
-</select>
-
-
-
-
-
-<br><br>
-
-
-
-
-<label>
-
-☐ Lengan Panjang
-
-</label>
-
-
-<input
-
-type="checkbox"
-
-id="longSleeve"
-
->
-
-
-
-
-<br><br>
-
-
-
-
-<label>
-
-Jumlah
-
-</label>
-
-
-
-<div class="qty-box">
-
-
-<button onclick="changeQty('shirtQty',-1)">
-
--
-
-</button>
-
-
-
-<span id="shirtQty">
-
-1
-
-</span>
-
-
-
-<button onclick="changeQty('shirtQty',1)">
-
-+
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-<button onclick="addTshirt()">
-
-TAMBAH T-SHIRT
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h3>
-
-LA BOLD 16
-
-</h3>
-
-
-
-
-<div class="qty-box">
-
-
-<button onclick="changeQty('boldQty',-1)">
-
--
-
-</button>
-
-
-
-<span id="boldQty">
-
-1
-
-</span>
-
-
-
-<button onclick="changeQty('boldQty',1)">
-
-+
-
-</button>
-
-
-
-</div>
-
-
-
-
-<button onclick="addSimpleProduct('BAD-P013','boldQty')">
-
-TAMBAH
-
-</button>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h3>
-
-Prost Beer
-
-</h3>
-
-
-
-
-<div class="qty-box">
-
-
-<button onclick="changeQty('beerQty',-1)">
-
--
-
-</button>
-
-
-
-<span id="beerQty">
-
-1
-
-</span>
-
-
-
-<button onclick="changeQty('beerQty',1)">
-
-+
-
-</button>
-
-
-
-</div>
-
-
-
-
-<button onclick="addSimpleProduct('BAD-P014','beerQty')">
-
-TAMBAH
-
-</button>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h3>
-
-KERANJANG
-
-</h3>
-
-
-
-<div id="cartList">
-
-Belum ada produk
-
-</div>
-
-
-
-<hr>
-
-
-
-<div id="cartTotal">
-
-</div>
-
-
-
-<br>
-
-
-
-<button onclick="checkout()">
-
-CHECKOUT
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-
-<button onclick="showDashboard()">
-
-KEMBALI
-
-</button>
-
-
-
-</div>
-
-
-`;
-
-
-
-updateCartView();
-
-
+  updateCartView();
 
 }
-
-
-
-
-
 
 
 
