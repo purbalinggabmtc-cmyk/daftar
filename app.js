@@ -1258,13 +1258,11 @@ function renderMerchPage(){
         <option value="4XL">4XL</option>
       </select>
 
-      <br><br>
 
-     <label class="checkbox-row">
+      <label class="checkbox-row">
       <input type="checkbox" id="longSleeve">
       Lengan Panjang
-     </label>
-      <br><br>
+      </label>
 
       <label>Jumlah</label>
 
