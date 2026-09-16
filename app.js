@@ -2520,7 +2520,7 @@ function showTransactionSuccess(data){
 
       <button
         id="btnBayar"
-         onclick="bayarSekarang('${data.transaksi.transaksiId}')"
+        onclick="bayarSekarang('${data.transaksi.idTransaksi}')"
         style="background:#e11d2e;color:#fff;width:100%;
                padding:14px;border:none;border-radius:8px;
                font-weight:bold;cursor:pointer;font-size:16px;
@@ -2633,7 +2633,7 @@ function renderDashboard(data){
         `
         <button
           id="btnBayar"
-          onclick="bayarSekarang('${data.transaksi.transaksiId}')"
+          onclick="bayarSekarang('${data.transaksi.idTransaksi}')"
           style="background:#e11d2e;color:#fff;width:100%;
                  padding:12px;border:none;border-radius:8px;
                  font-weight:bold;cursor:pointer;margin-top:8px;"
