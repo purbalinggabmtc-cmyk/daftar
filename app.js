@@ -2700,12 +2700,8 @@ function bayarSekarang(idTransaksi){
   .then(r => r.json())
   .then(res => {
     if (res.status) {
-
-      // ✅ PAKAI redirect_url — bukan snap.pay()
-      //    Redirect ke halaman pembayaran Midtrans langsung.
-      //    Ini menghindari masalah CSP/iframe/popup.
+      // ✅ Pakai redirect_url (bukan window.snap.pay)
       window.location.href = res.redirect_url;
-
     } else {
       alert(res.message);
     }
