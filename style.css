@@ -1,110 +1,136 @@
-body{
+/* ======================================
+   BASE
+====================================== */
 
-margin:0;
+body {
+  margin: 0;
+  background: #090909;
+  color: white;
+  font-family: Arial, sans-serif;
+}
 
-background:#090909;
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 25px;
+  text-align: center;
+}
 
-color:white;
+.logo {
+  width: 90%;
+  margin-bottom: 20px;
+}
 
-font-family:Arial;
-
+.card {
+  background: #1b1b1b;
+  padding: 20px;
+  border-radius: 15px;
 }
 
 
+/* ======================================
+   INPUT — lebih estetik
+====================================== */
 
-.container{
+input {
+  width: 100%;
+  padding: 14px 16px;
+  margin: 8px 0 16px 0;
+  border-radius: 12px;
+  border: 1px solid #333;
+  background: #f7f7f7;
+  color: #111;
+  font-size: 15px;
+  box-sizing: border-box;          /* WAJIB: biar tidak meluber */
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
 
-max-width:420px;
-
-margin:auto;
-
-padding:25px;
-
-text-align:center;
-
+input:focus {
+  border-color: #b00000;
+  box-shadow: 0 0 0 3px rgba(176, 0, 0, .25);
 }
 
 
+/* ======================================
+   BUTTON — dengan animasi tekan
+====================================== */
 
-.logo{
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 12px;
+  background: #b00000;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: .5px;
+  cursor: pointer;
+  transition: transform .12s ease,
+              background .2s ease,
+              box-shadow .2s ease;
+}
 
-width:90%;
+button:hover {
+  background: #d41313;
+}
 
-margin-bottom:20px;
-
+button:active {
+  transform: scale(0.96);                        /* efek ditekan */
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, .35);
 }
 
 
+/* ======================================
+   MESSAGE
+====================================== */
 
-.card{
+.success {
+  color: #00ff88;
+}
 
-background:#1b1b1b;
-
-padding:20px;
-
-border-radius:15px;
-
+.error {
+  color: #ff5555;
 }
 
 
+/* ======================================
+   TOMBOL QTY (+/-) DI MERCH
+   biar tidak kena efek button full-width
+====================================== */
 
-input{
+.qty-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px 0;
+}
 
-width:100%;
+.qty-box button {
+  width: 44px;
+  min-width: 44px;
+  padding: 0;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 1;
+  margin: 0;
+}
 
-padding:15px;
-
-margin:10px 0;
-
-border-radius:10px;
-
-border:none;
-
-font-size:16px;
-
+.qty-box span {
+  min-width: 32px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 
+/* ======================================
+   CENTER QR CODE
+====================================== */
 
-button{
-
-width:100%;
-
-padding:15px;
-
-margin-top:10px;
-
-border:none;
-
-border-radius:10px;
-
-
-background:#b00000;
-
-color:white;
-
-font-weight:bold;
-
-font-size:16px;
-
-}
-
-
-.success{
-
-color:#00ff88;
-
-}
-
-
-.error{
-
-color:#ff5555;
-
-}
-
-
-/* ===== CENTER QR CODE ===== */
 #qrcode {
   display: flex;
   justify-content: center;
