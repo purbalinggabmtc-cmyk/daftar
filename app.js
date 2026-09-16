@@ -2846,3 +2846,29 @@ height:
 
 
 }
+
+// Di halaman Transaksi Berhasil:
+// <button onclick="bayarSekarang('BAD-T5881')">BAYAR SEKARANG</button>
+
+function bayarSekarang(idTransaksi){
+  fetch(API_URL, {
+    method:"POST",
+    body: JSON.stringify({
+      action:"payMidtrans",
+      data:{ idTransaksi: idTransaksi }
+    })
+  })
+  .then(r=>r.json())
+  .then(res=>{
+    if(res.status){
+      window.snap.pay(res.token, {
+        onSuccess: function(){ showDashboard(); },
+        onPending: function(){ showDashboard(); },
+        onError:   function(){ alert("Pembayaran gagal"); },
+        onClose:   function(){ /* tidak apa-apa */ }
+      });
+    } else {
+      alert(res.message);
+    }
+  });
+}
