@@ -2605,248 +2605,144 @@ KEMBALI DASHBOARD
 // RENDER DASHBOARD
 // ======================================
 
-
 function renderDashboard(data){
 
+  // Tentukan apakah perlu tombol bayar
+  // Muncul kalau: ada transaksi TAPI belum lunas
+  const perluBayar =
+    data.transaksi &&
+    data.statusBayar &&
+    data.statusBayar !== "Lunas";
+
+  document.body.innerHTML = `
+
+  <div class="container">
+
+    <img
+      src="logo.png"
+      class="logo"
+    >
+
+    <div class="card">
+
+      <h2>
+        Halo ${data.nama} 👋
+      </h2>
+
+      <h3>
+        ${data.idPeserta}
+      </h3>
+
+      <div id="qrcode"></div>
+
+      <p>
+        Tunjukkan QR ini saat check-in
+      </p>
+
+    </div>
+
+    <div class="card">
+
+      <h3>
+        STATUS PESERTA
+      </h3>
+
+      <p>
+        ${data.checkin}
+      </p>
+
+    </div>
+
+    <div class="card">
+
+      <h3>
+        MERCHANDISE
+      </h3>
+
+      ${
+        data.transaksi
+        ?
+        `
+        <p>
+          ${data.transaksi.detailProduk}
+        </p>
+
+        <p>
+          Total:
+          Rp${Number(data.transaksi.subTotal).toLocaleString()}
+        </p>
+
+        <p>
+          Status:
+          ${data.statusBayar}
+        </p>
+        `
+        :
+        `
+        <p>
+          Belum ada transaksi
+        </p>
+        `
+      }
+
+      ${
+        perluBayar
+        ?
+        `
+        <button
+          id="btnBayar"
+          onclick="bayarSekarang('${data.idTransaksi || ""}')"
+          style="background:#e11d2e;color:#fff;width:100%;
+                 padding:12px;border:none;border-radius:8px;
+                 font-weight:bold;cursor:pointer;margin-top:8px;"
+        >
+          💳 BAYAR SEKARANG
+        </button>
+        `
+        :
+        ``
+      }
+
+      <button onclick="loadProducts()">
+        BELI MERCH
+      </button>
+
+    </div>
 
+    <div class="card">
 
-document.body.innerHTML = `
+      <h3>
+        KUPON UNDIAN
+      </h3>
 
+      <h2>
+        🎟 ${data.jumlahKupon}
+      </h2>
 
-<div class="container">
+    </div>
 
+    <button onclick="showDashboard()">
+      REFRESH STATUS
+    </button>
 
+    <button onclick="logout()">
+      LOGOUT
+    </button>
 
-<img
+  </div>
 
-src="logo.png"
+  `;
 
-class="logo"
-
->
-
-
-
-<div class="card">
-
-
-<h2>
-
-Halo ${data.nama} 👋
-
-</h2>
-
-
-
-<h3>
-
-${data.idPeserta}
-
-</h3>
-
-
-
-<div id="qrcode"></div>
-
-
-
-<p>
-
-Tunjukkan QR ini saat check-in
-
-</p>
-
-
-</div>
-
-
-
-
-
-<div class="card">
-
-
-<h3>
-
-STATUS PESERTA
-
-</h3>
-
-
-<p>
-
-${data.checkin}
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h3>
-
-MERCHANDISE
-
-</h3>
-
-
-${
-data.transaksi
-
-?
-
-`
-
-<p>
-
-${data.transaksi.detailProduk}
-
-</p>
-
-
-<p>
-
-Total:
-
-Rp${Number(data.transaksi.subTotal)
-.toLocaleString()}
-
-</p>
-
-
-
-<p>
-
-Status:
-
-${data.statusBayar}
-
-</p>
-
-
-`
-
-:
-
-`
-
-<p>
-
-Belum ada transaksi
-
-</p>
-
-
-`
+  new QRCode(
+    document.getElementById("qrcode"),
+    {
+      text: data.qrCode,
+      width: 220,
+      height: 220
+    }
+  );
 
 }
-
-
-
-<button onclick="loadProducts()">
-
-BELI MERCH
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="card">
-
-
-<h3>
-
-KUPON UNDIAN
-
-</h3>
-
-
-<h2>
-
-🎟 ${data.jumlahKupon}
-
-</h2>
-
-
-</div>
-
-
-<button onclick="showDashboard()">
-REFRESH STATUS
-</button>
-
-
-<button onclick="logout()">
-
-LOGOUT
-
-</button>
-
-
-
-</div>
-
-
-`;
-
-
-
-
-
-
-new QRCode(
-
-
-document.getElementById(
-"qrcode"
-),
-
-
-{
-
-
-text:
-
-data.qrCode,
-
-
-width:
-
-220,
-
-
-height:
-
-220
-
-
-}
-
-
-);
-
-
-
-}
-
 // Di halaman Transaksi Berhasil:
 // <button onclick="bayarSekarang('BAD-T5881')">BAYAR SEKARANG</button>
 
