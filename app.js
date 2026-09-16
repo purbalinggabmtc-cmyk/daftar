@@ -8,7 +8,7 @@
 
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbw7GQL1bDFKXlmj5KtvhAVXwziCfFfyJS90hlnK9yJ57zQz1rafRrWpdX_ierJPB9wHBQ/exec";
+"https://midtrans.abeliavirensya.workers.dev/";
 
 
 
