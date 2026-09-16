@@ -102,3 +102,20 @@ color:#00ff88;
 color:#ff5555;
 
 }
+
+
+/* ===== CENTER QR CODE ===== */
+#qrcode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 16px auto;
+  padding: 0;
+}
+
+#qrcode canvas,
+#qrcode img {
+  display: block;
+  margin: 0 auto;
+}
