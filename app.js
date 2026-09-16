@@ -1623,160 +1623,52 @@ updateCartView();
 
 function updateCartView(){
 
+  const area = document.getElementById("cartList");
+  const totalArea = document.getElementById("cartTotal");
 
+  if(!area){ return; }
 
-const area =
+  if(cart.length === 0){
+    area.innerHTML = "Belum ada produk";
+    totalArea.innerHTML = "";
+    return;
+  }
 
-document.getElementById(
-"cartList"
-);
+  let html = "";
+  let total = 0;
+  let kupon = 0;
 
+  cart.forEach((item, index) => {
 
+    const product = getProductInfo(item.idProduk);
 
-const totalArea =
+    html += `
+      <div class="cart-item">
+        <span>
+          ${product.namaProduk}
+          ${product.varian}
+          x${item.qty}
+        </span>
+        <button class="btn-hapus" onclick="hapusItem(${index})">
+          ❌
+        </button>
+      </div>
+    `;
 
-document.getElementById(
-"cartTotal"
-);
+    total += product.harga * item.qty;
+    kupon += product.jumlahKupon * item.qty;
 
+  });
 
+  area.innerHTML = html;
 
-
-if(!area){
-
-return;
+  totalArea.innerHTML = `
+    Total: <b>Rp${total.toLocaleString()}</b>
+    <br>
+    Kupon: <b>${kupon}</b>
+  `;
 
 }
-
-
-
-
-
-if(cart.length===0){
-
-
-area.innerHTML =
-
-"Belum ada produk";
-
-
-totalArea.innerHTML="";
-
-
-return;
-
-
-}
-
-
-
-
-
-
-let html="";
-
-let total=0;
-
-let kupon=0;
-
-
-
-
-
-cart.forEach(item=>{
-
-
-
-const product =
-
-getProductInfo(
-item.idProduk
-);
-
-
-
-
-html += `
-
-
-<p>
-
-${product.namaProduk}
-
-${product.varian}
-
-x${item.qty}
-
-</p>
-
-
-`;
-
-
-
-total +=
-
-product.harga *
-
-item.qty;
-
-
-
-kupon +=
-
-product.jumlahKupon *
-
-item.qty;
-
-
-
-});
-
-
-
-
-
-
-area.innerHTML = html;
-
-
-
-
-totalArea.innerHTML = `
-
-
-Total:
-
-<b>
-
-Rp${total.toLocaleString()}
-
-</b>
-
-
-<br>
-
-
-Kupon:
-
-<b>
-
-${kupon}
-
-</b>
-
-
-`;
-
-
-
-}
-
-
-
-
-
-
 
 
 
