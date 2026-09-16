@@ -2690,23 +2690,27 @@ function renderDashboard(data){
 
 function bayarSekarang(idTransaksi){
   fetch(API_URL, {
-    method:"POST",
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=UTF-8" },
     body: JSON.stringify({
-      action:"payMidtrans",
-      data:{ idTransaksi: idTransaksi }
+      action: "payMidtrans",
+      data: { idTransaksi: idTransaksi }
     })
   })
-  .then(r=>r.json())
-  .then(res=>{
-    if(res.status){
-      window.snap.pay(res.token, {
-        onSuccess: function(){ showDashboard(); },
-        onPending: function(){ showDashboard(); },
-        onError:   function(){ alert("Pembayaran gagal"); },
-        onClose:   function(){ /* tidak apa-apa */ }
-      });
+  .then(r => r.json())
+  .then(res => {
+    if (res.status) {
+
+      // ✅ PAKAI redirect_url — bukan snap.pay()
+      //    Redirect ke halaman pembayaran Midtrans langsung.
+      //    Ini menghindari masalah CSP/iframe/popup.
+      window.location.href = res.redirect_url;
+
     } else {
       alert(res.message);
     }
+  })
+  .catch(err => {
+    alert("Gagal menghubungi server: " + err.message);
   });
 }
