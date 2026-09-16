@@ -2520,7 +2520,7 @@ function showTransactionSuccess(data){
 
       <button
         id="btnBayar"
-        onclick="bayarSekarang('${data.transaksi.idTransaksi}')"
+        onclick="bayarSekarang('${data.idTransaksi}')"
         style="background:#e11d2e;color:#fff;width:100%;
                padding:14px;border:none;border-radius:8px;
                font-weight:bold;cursor:pointer;font-size:16px;
