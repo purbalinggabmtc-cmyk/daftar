@@ -205,3 +205,28 @@ button:active {
   display: block;
   margin: 0 auto;
 }
+
+/* ======================================
+   CHECKBOX ROW (Lengan Panjang)
+====================================== */
+
+.checkbox-row {
+  display: block !important;
+  width: 100% !important;
+  text-align: center;
+  margin: 14px 0;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.checkbox-row input[type="checkbox"] {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  max-width: 20px !important;
+  margin: 0 8px 0 0 !important;
+  padding: 0 !important;
+  vertical-align: middle;
+  accent-color: #b00000;
+  cursor: pointer;
+}
